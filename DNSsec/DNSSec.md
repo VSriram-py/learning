@@ -1,9 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
-
-# I want to deploy a DNSSec setup in my lab environment, I need a step-by-step guide on how to set up and create different folders for each activity, like root, TLD, authoritative DNS server and CA certificates and others if needed. I want the DNS name as example.zx and test.zx, and it should have sample records of a DNS server, email server, file server, and other sample servers which we can think of. We should have a source of SSL server to sign all these records internally. Everything has to be inside an air-gapped environment, so I don't have access to the internet, and everything has to be deployed in a Docker environment. And this setup should renew the key every month, and the key renewal should be automated. Also, I need a GUI setup so that I can add and remove records from these DNS servers, and everything in the background should be automated, like key signing and zone signing. The setup will be done over a Linux Ubuntu environment. You should be able to upload these configs to GitHub for later use when needed.
-
-Based on my research, I'll create a comprehensive step-by-step guide for your air-gapped DNSSec setup. This is a complex multi-component system, so I'll provide detailed documentation.
-
 # Complete Air-Gapped DNSSec Lab Environment Setup Guide
 
 ## System Overview
