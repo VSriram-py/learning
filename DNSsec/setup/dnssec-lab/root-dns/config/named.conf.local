@@ -1,0 +1,20 @@
+dnssec-policy "root-policy" {
+  dnskey-ttl 3600;
+  keys {
+    ksk lifetime P180D algorithm ecdsa256;
+    zsk lifetime P30D  algorithm ecdsa256;
+  };
+  signatures-refresh 5d;
+  signatures-validity 14d;
+  signatures-validity-dnskey 14d;
+};
+
+zone "." {
+  type master;
+  file "/etc/bind/zones/db.root";
+  dnssec-policy "root-policy";
+  inline-signing yes;
+  key-directory "/etc/bind/keys";
+  auto-dnssec maintain;
+  allow-query { any; };
+};

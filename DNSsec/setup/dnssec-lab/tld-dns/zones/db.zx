@@ -1,0 +1,17 @@
+$TTL 86400
+$ORIGIN zx.
+@ IN SOA tld-ns.zx. admin.zx. (
+  2026021201 3600 1800 604800 86400 )
+@ IN NS tld-ns.zx.
+tld-ns IN A 172.20.0.21
+
+; delegate example.zx and test.zx to PowerDNS
+example.zx. IN NS ns1.example.zx.
+ns1.example.zx. IN A 172.20.0.51
+
+test.zx. IN NS ns1.test.zx.
+ns1.test.zx. IN A 172.20.0.51
+
+; DS for children will be managed by scripts/ds-sync.sh
+;__EXAMPLE_DS__
+;__TEST_DS__

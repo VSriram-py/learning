@@ -1,0 +1,194 @@
+version: '3.8'
+
+networks:
+  dnssec_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  mysql_data:
+  poweradmin_data:
+  ca_data:
+  ca_certs:
+
+services:
+  mysql:
+    image: mariadb:10.11
+    container_name: pdns-mysql
+    restart: unless-stopped
+    networks:
+      dnssec_net:
+        ipv4_address: 172.20.0.50
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./gui/poweradmin/init-pdns-schema.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    security_opt:
+      - no-new-privileges:true
+
+  powerdns:
+    image: powerdns/pdns-auth-48:latest
+    container_name: powerdns-auth
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      dnssec_net:
+        ipv4_address: 172.20.0.51
+    environment:
+      - PDNS_AUTH_API_KEY=${PDNS_API_KEY}
+    command:
+      - --api=yes
+      - --api-key=${PDNS_API_KEY}
+      - --webserver=yes
+      - --webserver-address=0.0.0.0
+      - --webserver-port=8081
+      - --webserver-allow-from=0.0.0.0/0
+      - --launch=gmysql
+      - --gmysql-host=pdns-mysql
+      - --gmysql-user=${MYSQL_USER}
+      - --gmysql-password=${MYSQL_PASSWORD}
+      - --gmysql-dbname=${MYSQL_DATABASE}
+      - --gmysql-dnssec=yes
+      - --dnssec=yes
+    ports:
+      - "5353:53/udp"
+      - "5353:53/tcp"
+      - "8081:8081"
+    security_opt:
+      - no-new-privileges:true
+
+  poweradmin:
+    image: poweradmin/poweradmin:stable
+    container_name: poweradmin-gui
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      powerdns:
+        condition: service_started
+    networks:
+      dnssec_net:
+        ipv4_address: 172.20.0.52
+    environment:
+      - DB_TYPE=mysql
+      - DB_HOST=pdns-mysql
+      - DB_PORT=3306
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}
+      - PA_CREATE_ADMIN=${PA_CREATE_ADMIN}
+      - PA_ADMIN_USERNAME=${PA_ADMIN_USERNAME}
+      - PA_ADMIN_PASSWORD=${PA_ADMIN_PASSWORD}
+      - PA_ADMIN_EMAIL=${PA_ADMIN_EMAIL}
+      - PA_ADMIN_FULLNAME=${PA_ADMIN_FULLNAME}
+      - PA_PDNS_API_URL=http://powerdns-auth:8081
+      - PA_PDNS_API_KEY=${PDNS_API_KEY}
+      - TZ=${TZ}
+    ports:
+      - "8080:80"
+    volumes:
+      - poweradmin_data:/var/www/html
+    security_opt:
+      - no-new-privileges:true
+
+  step-ca:
+    image: smallstep/step-ca:latest
+    container_name: internal-ca
+    restart: unless-stopped
+    networks:
+      dnssec_net:
+        ipv4_address: 172.20.0.10
+    volumes:
+      - ca_data:/home/step
+      - ca_certs:/home/step/certs
+    environment:
+      - DOCKER_STEPCA_INIT_NAME=DNSSec Lab CA
+      - DOCKER_STEPCA_INIT_DNS_NAMES=ca.internal.lab,localhost,172.20.0.10
+      - DOCKER_STEPCA_INIT_ACME=true
+    ports:
+      - "9000:9000"
+    security_opt:
+      - no-new-privileges:true
+
+  cert-api:
+    build: ./ca-server/cert-api
+    container_name: cert-api
+    restart: unless-stopped
+    depends_on:
+      - step-ca
+    networks:
+      dnssec_net:
+        ipv4_address: 172.20.0.11
+    environment:
+      - GUI_ADMIN_USER=${GUI_ADMIN_USER}
+      - GUI_ADMIN_PASS=${GUI_ADMIN_PASS}
+    volumes:
+      - ca_certs:/certs:ro
+    ports:
+      - "9443:9443"
+    security_opt:
+      - no-new-privileges:true
+
+  root-dns:
+    image: ubuntu/bind9:latest
+    container_name: root-dns-server
+    restart: unless-stopped
+    networks:
+      dnssec_net:
+        ipv4_address: 172.20.0.20
+    volumes:
+      - ./root-dns/config:/etc/bind:ro
+      - ./root-dns/zones:/etc/bind/zones
+      - ./root-dns/keys:/etc/bind/keys
+      - ./root-dns/logs:/var/log/named
+    ports:
+      - "5300:53/udp"
+      - "5300:53/tcp"
+    security_opt:
+      - no-new-privileges:true
+
+  tld-dns:
+    image: ubuntu/bind9:latest
+    container_name: tld-dns-server
+    restart: unless-stopped
+    networks:
+      dnssec_net:
+        ipv4_address: 172.20.0.21
+    volumes:
+      - ./tld-dns/config:/etc/bind:ro
+      - ./tld-dns/zones:/etc/bind/zones
+      - ./tld-dns/keys:/etc/bind/keys
+      - ./tld-dns/logs:/var/log/named
+    ports:
+      - "5301:53/udp"
+      - "5301:53/tcp"
+    security_opt:
+      - no-new-privileges:true
+
+  dnssec-tester:
+    build: ./gui/dnssec-tester
+    container_name: dnssec-tester
+    restart: unless-stopped
+    networks:
+      dnssec_net:
+        ipv4_address: 172.20.0.53
+    environment:
+      - GUI_ADMIN_USER=${GUI_ADMIN_USER}
+      - GUI_ADMIN_PASS=${GUI_ADMIN_PASS}
+    ports:
+      - "8082:8082"
+    security_opt:
+      - no-new-privileges:true

@@ -1,0 +1,13 @@
+$TTL 86400
+$ORIGIN .
+@ IN SOA root-ns.lab. admin.lab. (
+  2026021201 3600 1800 604800 86400 )
+@ IN NS root-ns.lab.
+root-ns.lab. IN A 172.20.0.20
+
+; delegate zx.
+zx. IN NS tld-ns.zx.
+tld-ns.zx. IN A 172.20.0.21
+
+; DS for zx will be managed by scripts/ds-sync.sh (marker below)
+;__ZX_DS__
