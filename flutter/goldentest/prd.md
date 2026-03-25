@@ -1,159 +1,152 @@
-# PRD: TaskFlow — AI-Powered Task Management
+# Product Requirements Document: QR Code Expiration Tracker
 
-## Overview
-TaskFlow is a task management platform designed for distributed remote teams of 5-50 people. It integrates with Slack for seamless task creation and uses AI to automatically prioritize work based on urgency, impact, dependencies, and team capacity.
+## 1. Executive Summary
+**Product vision**: To provide users with a simple and intuitive mobile app that generates a personalized QR code with an expiration date, allowing for easy tracking and management.
 
-**Target launch:** Q2 2026 (MVP in 4 weeks)
-**Target users:** Remote team leads and individual contributors
-**North star metric:** Tasks completed on-time per team per week
+**Target audience**: The app is designed for general consumers who need a convenient way to track expiration dates and share their information via a QR code.
 
-## Problem Statement
-Remote teams waste 5+ hours per week on manual task triage. Existing tools require constant manual prioritization — leading to critical tasks falling through the cracks across timezones. When a team lead in NYC creates a high-priority task at 5pm, the developer in Berlin doesn't see it until morning, and by then priorities have shifted again.
+**Key goals and objectives**:
+- Offer a user-friendly interface for generating and managing personalized QR codes
+- Provide clear and prominent display of the expiration date to ensure visibility
+- Deliver a consistent experience across both iOS and Android platforms
 
-**Why now:** Remote-first teams grew 340% since 2020. AI can now understand task context well enough to automate priority scoring that previously required a human PM.
+**Value proposition**: The QR Code Expiration Tracker app empowers users to easily create and track personalized QR codes with expiration dates, simplifying information sharing and reducing the risk of expired data.
 
-## Target Users
+## 2. Problem Statement
+**User pain points**:
+- Difficulty keeping track of expiration dates for various personal information or documents
+- Inconvenience of manually updating or sharing expiration details with others
+- Lack of a simple and reliable solution for generating and managing personalized QR codes
 
-### Primary: Remote Team Leads
-- Managing 5-15 direct reports across 2+ timezones
-- Spends 6+ hours/week triaging, re-prioritizing, and following up
-- Currently uses Linear or Asana but manually sorts priorities daily
-- Willing to pay $12-20/seat/month for time savings
+**Market opportunity**:
+- Growing demand for mobile apps that provide convenient tools for personal information management
+- Increasing reliance on QR codes for contactless information sharing
+- Need for a solution that addresses the challenge of expiration date visibility and tracking
 
-### Secondary: Individual Contributors
-- Juggling 3+ concurrent projects with competing deadlines
-- Loses context switching between Slack threads and task boards
-- Wants a single view of "what should I work on right now?"
+**Why this matters now**:
+- The COVID-19 pandemic has accelerated the shift towards contactless interactions, driving the need for mobile apps that facilitate secure and efficient information sharing
+- Consumers are seeking more control and organization over their personal data, creating a market opportunity for a user-friendly QR code management solution
 
-## Goals & Success Metrics
+## 3. Goals and Success Metrics
+**Primary objectives**:
+- Provide users with an easy-to-use app for generating personalized QR codes with expiration dates
+- Ensure clear and prominent display of the expiration date to improve visibility and awareness
+- Deliver a consistent and seamless user experience across both iOS and Android platforms
 
-| Metric | Target (Month 1) | Target (Month 6) |
-|--------|------------------|------------------|
-| Weekly active teams | 50 | 500 |
-| Tasks created via Slack | 30% of all tasks | 60% |
-| On-time task completion | +15% vs baseline | +30% |
-| Daily digest open rate | 50% | 65% |
-| NPS | 30+ | 50+ |
+**Key Performance Indicators (KPIs)**:
+- User acquisition and retention rates
+- Average user engagement (e.g., number of QR codes generated, frequency of use)
+- User satisfaction and feedback (e.g., app store ratings, user reviews)
+- Successful cross-platform deployment and performance
 
-## User Stories
+**Success criteria**:
+- Achieve a user satisfaction rating of 4.5 stars or higher on both iOS and Android app stores
+- Maintain a user retention rate of at least 70% after 30 days of initial use
+- Receive positive user feedback highlighting the app's ease of use, expiration date visibility, and cross-platform consistency
 
-1. As a team lead, I want to see all my team's tasks sorted by AI-computed priority so I don't manually triage every morning
-2. As a developer, I want to create tasks from Slack threads so I don't lose context switching to a separate tool
-3. As a team lead, I want a daily AI-generated digest in Slack DM showing each person's top 3 priorities
-4. As a contributor, I want to type "Schedule design review with Sarah Friday" and have it create a properly tagged task
-5. As a team lead, I want to see dependency chains so I know which blocked tasks to escalate
-6. As a contributor, I want AI to explain WHY a task is high priority so I trust the ranking
-7. As a team lead, I want weekly velocity reports per team member without manual tracking
-8. As a contributor, I want to snooze a task with "remind me after standup" and have it reappear
+## 4. User Personas
+**Primary users**:
+- Busy professionals who need to manage and share personal information (e.g., business cards, identification documents)
+- Individuals who frequently attend events or meetings and require a convenient way to share their contact details
 
-## Functional Requirements
+**Secondary users**:
+- Consumers who want to organize and track the expiration dates of various personal documents or memberships
+- Families or households that need a centralized solution for managing shared information and expiration dates
 
-### P0 — Must Have (MVP)
-1. Task CRUD with natural language input — parse "Fix auth bug for Sarah by Friday" into structured task
-2. AI priority scoring: composite of urgency (deadline proximity) × impact (stakeholder weight) × dependency chain depth
-3. Slack integration — create tasks from thread replies using ⚡ emoji reaction or /task command
-4. Daily digest — AI-generated summary sent to each team member's Slack DM at 9am local time
-5. Team dashboard — priority-sorted kanban with filters by assignee, project, and priority tier
-6. Due date tracking with automated Slack reminders at 24h and 2h before deadline
+**User characteristics and needs**:
+- Desire for a simple and intuitive mobile app to manage personal information and expiration dates
+- Requirement for clear and prominent display of expiration dates to avoid missed deadlines
+- Preference for a cross-platform solution that works seamlessly on both iOS and Android devices
+- Need for a secure and reliable way to share personal information via QR codes
 
-### P1 — Should Have
-7. Dependency visualization — DAG view showing task blocking relationships
-8. Calendar sync (Google Calendar) — auto-block focus time for high-priority deep work
-9. Recurring task templates with smart scheduling (avoid Mondays for weekly reviews)
-10. Priority override — team lead can pin/boost tasks, AI learns from overrides
+## 5. User Stories
+1. As a busy professional, I want to generate a personalized QR code with my name and contact information, so that I can easily share my details at meetings or events.
+   - Acceptance Criteria:
+     - The user can input their name in a text field on the login screen.
+     - Upon submitting the name, the app transitions to the second screen and displays the user's name.
+     - The QR code generated on the second screen must contain the user's name and contact information.
 
-### P2 — Nice to Have
-11. Resource allocation heatmap — see who's overloaded at a glance
-12. Sprint planning assistant — AI suggests sprint scope based on velocity history
-13. Time estimation with accuracy tracking — AI predicts completion time, improves over time
+2. As a user, I want the expiration date of my QR code to be prominently displayed, so that I can easily track when the information will expire.
+   - Acceptance Criteria:
+     - The expiration date must be displayed in a large, clear font on the second screen.
+     - The expiration date must be easily readable from a distance of approximately 10 feet.
+     - The expiration date must be calculated as 30 days from the current date.
 
-## Non-Functional Requirements
-- **Performance:** Dashboard loads in <800ms on 3G. Task creation responds in <200ms.
-- **Scalability:** Support 10,000 concurrent users. Slack webhook processing within 500ms.
-- **Security:** SOC 2 Type II compliance by Month 6. All data encrypted at rest (AES-256) and in transit (TLS 1.3).
-- **Availability:** 99.9% uptime SLA. Graceful degradation if AI service is down (fall back to manual priority).
-- **Accessibility:** WCAG 2.1 AA compliance. Full keyboard navigation. Screen reader support.
+3. As a user, I want to access my profile information and log out of the app, so that I can manage my account and personal details.
+   - Acceptance Criteria:
+     - The user can navigate to a third screen by tapping the profile button on the second screen.
+     - The third screen must display the user's name.
+     - The third screen must include a logout button that, when pressed, returns the user to the initial login screen.
 
-## Technical Considerations
+## 6. Functional Requirements
+**Core features and capabilities**:
+1. Login screen:
+   - User can input their name in a text field
+   - User can submit the name using a button
+   - App transitions to the second screen upon name submission
 
-### Recommended Stack
-- **Frontend:** Next.js 14 (App Router) + Tailwind CSS + shadcn/ui
-- **Backend:** Next.js API Routes + tRPC for type-safe API layer
-- **Database:** Supabase (Postgres + Auth + Realtime subscriptions)
-- **AI:** Claude API for task parsing, priority scoring, and digest generation
-- **Integrations:** Slack API (Events API + Web API + Socket Mode)
-- **Queue:** Inngest for background jobs (digest generation, Slack sync)
-- **Hosting:** Vercel (frontend) + Supabase (backend/db)
+2. Second screen:
+   - Displays the user's name in a prominent location
+   - Shows the current date in a clear and visible manner
+   - Generates and displays a QR code containing the user's name and contact information
+   - Prominently displays the expiration date, calculated as 30 days from the current date
 
-### Database Schema (Core Tables)
-- teams (id, name, slack_workspace_id, created_at)
-- users (id, email, name, team_id, slack_user_id, timezone, role)
-- tasks (id, title, description, assignee_id, creator_id, team_id, priority_score, status, due_date, created_from, parent_task_id)
-- priority_logs (id, task_id, score, factors_json, computed_at)
-- integrations (id, team_id, provider, access_token, config_json)
+3. Third screen (profile):
+   - Displays the user's name
+   - Includes a logout button that returns the user to the initial login screen
 
-### API Endpoints
-- POST /api/tasks — Create task (accepts natural language or structured)
-- PATCH /api/tasks/:id — Update task status, assignment, priority override
-- GET /api/tasks?team_id=&sort=priority — List tasks with AI-sorted priority
-- POST /api/slack/events — Slack event webhook (task creation, reactions)
-- GET /api/digest/:user_id — Generate daily priority digest
-- GET /api/analytics/velocity — Team velocity metrics
+**Feature priorities**:
+- Must-have:
+  - Login screen with name input and submission
+  - Second screen with user name, date, QR code, and expiration date
+  - Third screen with user profile and logout functionality
+- Should-have:
+  - Consistent UI design and layout across all screens
+  - Responsive and optimized performance on both iOS and Android
+- Could-have:
+  - Additional user profile customization options
+  - Ability to save and manage multiple QR codes
 
-## UI/UX Requirements
+**User flows**:
+1. User opens the app and is presented with the login screen.
+2. User inputs their name in the text field and taps the submit button.
+3. App transitions to the second screen, displaying the user's name, the current date, the generated QR code, and the expiration date.
+4. User can tap the profile button at the bottom of the second screen to navigate to the third screen.
+5. On the third screen, the user can view their name and tap the logout button to return to the initial login screen.
 
-### Key Screens
-1. **Dashboard** — Priority-sorted kanban (To Do / In Progress / Done) with team member avatars
-2. **Task Detail** — Full task view with priority explanation, dependencies, activity timeline
-3. **Digest View** — Daily summary showing today's priorities, blockers, and suggested focus blocks
-4. **Settings** — Team management, Slack connection, notification preferences
+## 7. Non-Functional Requirements
+**Performance requirements**:
+- The app must load and transition between screens within 2 seconds on both iOS and Android devices.
+- The QR code generation and display must be responsive and seamless, with no noticeable delays.
 
-### Design Principles
-- Information density over whitespace — this is a productivity tool, not a marketing page
-- Priority is always visible — color-coded P0 (red), P1 (amber), P2 (blue) badges
-- Keyboard-first — Cmd+K for quick task creation, arrow keys for navigation
-- Dark mode by default — this audience lives in terminals
+**Security requirements**:
+- The app must not store or transmit any sensitive user data without the user's consent.
+- The QR code must not contain any personal information that could be used for identity theft or unauthorized access.
 
-## Out of Scope (v1)
-- Mobile native app (web responsive is sufficient for MVP)
-- GitHub/GitLab integration (v2)
-- Custom workflow stages beyond To Do / In Progress / Done
-- Multi-team workspaces (single team per account in v1)
-- Offline mode
-- Video/audio features
+**Scalability considerations**:
+- The app must be able to handle a large number of users generating QR codes without significant performance degradation.
+- The backend infrastructure (if any) must be designed to scale as the user base grows.
 
-## Timeline & Milestones
+**Accessibility requirements**:
+- The expiration date text on the second screen must be large and clear enough to be easily readable from a distance of approximately 10 feet.
+- The app must support standard accessibility features, such as screen readers and high-contrast modes, to ensure usability for users with disabilities.
 
-### Phase 1: Core (Weeks 1-2)
-- Database schema + auth (Supabase)
-- Task CRUD + natural language parser (Claude API)
-- AI priority scoring engine
-- Basic dashboard UI
+## 8. Technical Considerations
+**Technology stack suggestions**:
+- Frontend: Flutter, a cross-platform framework for building native mobile applications
+- Backend (if required): Firebase, a comprehensive app development platform that provides cloud-based services
+- QR code generation: Use a Flutter package or library that can generate and display QR codes
 
-### Phase 2: Slack (Week 3)
-- Slack OAuth + workspace connection
-- Task creation from Slack threads
-- Daily digest generation + delivery
-- Slack notification preferences
+**Integration requirements**:
+- The app must be able to seamlessly integrate with the device's date and time systems to accurately calculate and display the expiration date.
+- If a backend is required, the app must be able to securely communicate with the backend services to manage user data and QR code generation.
 
-### Phase 3: Polish (Week 4)
-- Dependency tracking + visualization
-- Priority override + AI learning
-- Onboarding flow
-- Error handling, loading states, edge cases
-- Performance optimization + testing
+**Data requirements**:
+- The app must store the user's name and the generated QR code information (if any) for the duration of the user session.
+- If a backend is used, the app must be able to securely store and retrieve user data, ensuring data privacy and integrity.
 
-## Risks & Mitigations
-
-| Risk | Impact | Mitigation |
-|------|--------|-----------|
-| AI priority scoring feels inaccurate | Users lose trust, stop using | Allow manual overrides, show reasoning, train on override feedback |
-| Slack API rate limits during peak hours | Task creation delays | Queue-based processing with Inngest, batch digest delivery |
-| Supabase Realtime limits at scale | Dashboard feels stale | Implement polling fallback, upgrade plan at 500+ users |
-| Low daily digest engagement | Core value prop underdelivered | A/B test digest formats, add "reply to reprioritize" feature |
-
-## Open Questions
-1. Should AI priority scoring be transparent (show factors) or opaque (just show the score)?
-2. What's the right digest frequency — daily, or should we offer real-time priority change alerts?
-3. How do we handle priority conflicts when two team leads override the same task?
-4. Should free tier include Slack integration or gate it behind paid?
+## 9. Timeline and Milestones
+**Development phases**:
+1. **Phase 1 (4 weeks)**: Design and implement the login screen, including the name input and submission functionality.
+2. **Phase 2 (6 weeks)**: Develop the second screen, focusing on the user name display, current date, QR code generation, and expiration date calculation and display.
+3. **Phase 3 (4 weeks)**: Create the third screen for the user profile and logout functionality.
